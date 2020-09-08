@@ -15,6 +15,12 @@ Parameters:
       Default: "0.0.0.0/0"
 
 Resources:
+  ProfileWithRolesForOurApp:
+    Type: AWS::IAM::InstanceProfile
+    Properties: 
+      Roles:
+        - UdacityS3ReadOnlyEC2
+
   LBSecGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -60,16 +66,13 @@ Resources:
     Properties:
       UserData: !Base64 |
             #!/bin/bash
-            exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
-            sudo apt-get update -y
-            sudo apt-get install -y apache2
-            sudo systemctl start apache2.service
+            sudo yum update -y
+            sudo yum install -y httpd24
+            sudo service httpd start
+            sudo chkconfig httpd on
             cd /var/www/html
-            sudo rm index.html
-            sudo wget -P . https://udacity-sadrayan-p1.s3.amazonaws.com/udacity-travel-website.zip
-            sudo unzip udacity-travel-website.zip
-            sudo rm udacity-travel-website.zip
-      ImageId: ami-07ebfd5b3428b6f4d
+            sudo aws s3 cp s3://udacity-sadrayan-p1/HA-CF/index.html .
+      ImageId: ami-0841edc20334f9287
       SecurityGroups:
       - Ref: WebServerSecGroup
       InstanceType: t3.small
