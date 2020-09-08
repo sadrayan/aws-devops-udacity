@@ -1,5 +1,5 @@
 Description: >
-    Rico's High Availability Web App
+    Sadrayan High Availability Web App
 
 Parameters:
 
@@ -19,7 +19,7 @@ Resources:
     Type: AWS::IAM::InstanceProfile
     Properties: 
       Roles:
-        - UdacityS3ReadOnlyEC2
+        - EC2-S3-Access
 
   LBSecGroup:
     Type: AWS::EC2::SecurityGroup
@@ -67,12 +67,14 @@ Resources:
       UserData: !Base64 |
             #!/bin/bash
             sudo yum update -y
-            sudo yum install -y httpd24
-            sudo service httpd start
-            sudo chkconfig httpd on
+            sudo yum install -y httpd
+            sudo systemctl start httpd
+            sudo systemctl enable httpd
+            sudo systemctl is-enabled httpd
             cd /var/www/html
             sudo aws s3 cp s3://udacity-sadrayan-p1/HA-CF/index.html .
-      ImageId: ami-0841edc20334f9287
+      ImageId: ami-0c94855ba95c71c99
+      KeyName: EC2-KP
       SecurityGroups:
       - Ref: WebServerSecGroup
       InstanceType: t3.small
