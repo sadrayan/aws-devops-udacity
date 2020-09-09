@@ -66,14 +66,16 @@ Resources:
     Properties:
       UserData: !Base64 |
             #!/bin/bash
-            sudo yum update -y
-            sudo yum install -y httpd
-            sudo systemctl start httpd
-            sudo systemctl enable httpd
-            sudo systemctl is-enabled httpd
+            sudo apt-get update -y
+            sudo apt-get install -y apache2 unzip
+            sudo systemctl start apache2.service
+            sudo systemctl status apache2.service
             cd /var/www/html
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
             sudo aws s3 cp s3://udacity-sadrayan-p1/HA-CF/index.html .
-      ImageId: ami-0c94855ba95c71c99
+      ImageId: ami-0ba60995c1589da9d
       KeyName: EC2-KP
       SecurityGroups:
       - Ref: WebServerSecGroup
@@ -91,8 +93,8 @@ Resources:
           !Sub "${EnvironmentName}-PRIV-NETS"
       LaunchConfigurationName:
         Ref: WebAppLaunchConfig
-      MinSize: '3'
-      MaxSize: '5'
+      MinSize: '1'
+      MaxSize: '3'
       TargetGroupARNs:
       - Ref: WebAppTargetGroup
 

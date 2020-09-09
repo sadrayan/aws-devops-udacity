@@ -1,12 +1,11 @@
 Description: >
-    Sadrayan High Availability Bastion Host
+    Sadrayan Bastion Host
 
 Parameters:
     EnvironmentName:
       Description: An environment name that will be prefixed to resource names
       Type: String
       Default: "HA-Web-Project"
-
 
 Resources:
   BastionSG:
@@ -34,7 +33,7 @@ Resources:
             VolumeType: "gp2"
             DeleteOnTermination: true
             VolumeSize: 8
-      ImageId: ami-0c94855ba95c71c99
+      ImageId: ami-0841edc20334f9287
       InstanceType: t2.micro
       KeyName: EC2-KP
       NetworkInterfaces: 
