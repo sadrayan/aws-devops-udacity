@@ -2,7 +2,6 @@ Description: >
     Sadrayan High Availability Web App Infrastructure
 
 Parameters:
-
     EnvironmentName:
         Description: An environment name that will be prefixed to resource names
         Type: String
@@ -150,7 +149,6 @@ Resources:
         Properties:
             RouteTableId: !Ref PublicRouteTable
             SubnetId: !Ref PublicSubnet2
-    
 
       PrivateRouteTable1:
         Type: AWS::EC2::RouteTable
@@ -194,9 +192,7 @@ Resources:
             RouteTableId: !Ref PrivateRouteTable2
             SubnetId: !Ref PrivateSubnet2
 
-
 Outputs: 
-
       VPC: 
         Description: A reference to the created VPC
         Value: !Ref VPC
