@@ -13,32 +13,22 @@
 * ./delete.sh udemy-HA-stack
 * ./delete.sh udemy-infra-stack
 
-
 ## Diagram
 ![Diagram](AWS-HA-Instrastructure-CF.png)
 
-
 ## SSH into EC2
-ssh -i EC2-KP.pem ec2-user@YOUR_IP
+ssh -i EC2-KP.pem ec2-user@YOUR_Bastion_IP
 
-
-### AWS components deployed and configured by CloudFormation templates
-
-* A VPC configured with public and private subnets across two Availability Zones.
-* One Elastic Load Balancer (ELB) attached to VPC.
-* In the public subnets, NAT gateways to allow outbound internet connectivity for resources in the private subnets.
-* Bastion hosts public subnets to allow inbound Secure Shell (SSH) access.
+## AWS components deployed and configured by CloudFormation templates
+* VPC configured with public and private subnets across two Availability Zones.
+* Elastic Load Balancer (ELB) attached to VPC.
+* NAT gateways to allow outbound internet connectivity in the private subnets.
+* Bastion host in public subnets to allow inbound Secure Shell (SSH) access.
 * Security groups to restrict access to only necessary protocols and ports:
     * BastionSG (ssh - port:22)
     * WebServerSecGroup (http - port:80, ssh - port:22)
     * LBSecGroup (http - port:80)
- 
-In the private subnets, a YugaByte DB cluster with the replication factor set to three.
+* One EC2 instance of t3.small in each availability zone, with 10Gb of EBS volume.
+* InstanceProfile to provide access to S3 from EC2 instances
+* UserData script to install and configure Apache server and serve index.html
 
-One EC2 instance of c5.2xlarge in each availability zone, with 250Gb of EBS volume attached to it. (instance type and volume size can be made configurable)
-
-Custome Script to install and configure YugaByte DB component of the version defined by the user or by default 1.2.8.0. The script will configure and 
-run the master server and tserver as demon service on all ec2 instances.
-
-# Security
-Application instances are isolated in the private subnets. By configuring the corresponding security groups, inbound traffic is exclusively allowed from Bastion hosts, through Secure Shell Access (SSH) on port 22 and the Elastic Load Balancing, HTTP and HTTPS traffic on ports 80 and 443. 
