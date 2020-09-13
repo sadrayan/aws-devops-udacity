@@ -1,17 +1,17 @@
 # Create Stack
-./create.sh udemy-infra-stack private-network.yml private-network-parameters.json
-./create.sh udemy-HA-stack ha-infrastructure.yml ha-infrastructure-parameters.json
-./create.sh udemy-bastion-host-stack bastion-host.yml ha-infrastructure-parameters.json
+* ./create.sh udemy-infra-stack private-network.yml private-network-parameters.json
+* ./create.sh udemy-HA-stack ha-infrastructure.yml ha-infrastructure-parameters.json
+* ./create.sh udemy-bastion-host-stack bastion-host.yml ha-infrastructure-parameters.json
 
 # Update Stack
-./update.sh udemy-infra-stack private-network.yml private-network-parameters.json
-./update.sh udemy-HA-stack ha-infrastructure.yml ha-infrastructure-parameters.json
-./update.sh udemy-bastion-host-stack bastion-host.yml ha-infrastructure-parameters.json
+* ./update.sh udemy-infra-stack private-network.yml private-network-parameters.json
+* ./update.sh udemy-HA-stack ha-infrastructure.yml ha-infrastructure-parameters.json
+* ./update.sh udemy-bastion-host-stack bastion-host.yml ha-infrastructure-parameters.json
 
 # Delete Stack
-./delete.sh udemy-bastion-host-stack
-./delete.sh udemy-HA-stack
-./delete.sh udemy-infra-stack
+* ./delete.sh udemy-bastion-host-stack
+* ./delete.sh udemy-HA-stack
+* ./delete.sh udemy-infra-stack
 
 
 ### Diagram
@@ -33,12 +33,5 @@ In the private subnets, a YugaByte DB cluster with the replication factor set to
 One EC2 instance of c5.2xlarge in each availability zone, with 250Gb of EBS volume attached to it. (instance type and volume size can be made configurable)
 Custome Script to install and configure YugaByte DB component of the version defined by the user or by default 1.2.8.0. The script will configure and run the master server and tserver as demon service on all ec2 instances.
 
-# Security Benefits
+# Security
 Application instances are isolated in the private subnets. By configuring the corresponding security groups, inbound traffic is exclusively allowed from Bastion hosts, through Secure Shell Access (SSH) on port 22 and the Elastic Load Balancing, HTTP and HTTPS traffic on ports 80 and 443. 
-
-sudo apt-get update
-sudo apt install -y default-jdk
-wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
-sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
-sudo apt-get update
-sudo apt-get install -y jenkins
